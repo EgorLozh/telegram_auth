@@ -6,8 +6,7 @@ services:
     container_name: django-app
     ports:
       - "${API_PORT}:8000"
-    command: >
-      bash -c "poetry run python telegram_auth/manage.py runserver 0.0.0.0:${API_PORT}"
+    command: ["sh", "/app/entrypoint.sh"]
     env_file:
       - ../.env
     volumes:

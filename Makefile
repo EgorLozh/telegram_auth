@@ -57,7 +57,8 @@ all:
 
 
 .PHONY: down
-down: storage-down app-down  tg_bot-down
+down: 
+	$(DC) --env-file $(ENV_FILE) -f $(APP_COMPOSE_FILE) -f $(STORAGE_COMPOSE_FILE) -f $(TG_BOT_COMPOSE_FILE) down
 
 .PHONY: restart
 restart: down all
