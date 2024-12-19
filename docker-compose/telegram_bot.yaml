@@ -4,7 +4,7 @@ services:
       context: ..
       dockerfile: Dockerfile
     container_name: telegram-bot
-    # command: >
-    #   bash -c "python start.py"
+    command: >
+      bash -c "poetry run python bot/start.py"
     env_file:
       - ../.env
