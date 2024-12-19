@@ -1,7 +1,11 @@
 from functools import lru_cache
 from punq import Container, Scope
 
+from authorization.application.command_handlers.login import LoginCommandHandler
+from authorization.application.command_handlers.logout import LogoutCommandHandler
 from authorization.application.command_handlers.registration import RegistrationCommandHandler
+from authorization.application.commands.login import LoginCommand
+from authorization.application.commands.logout import LogoutCommand
 from authorization.application.commands.registration import RegistrationCommand
 from authorization.application.mediator import Mediator
 from authorization.domain.base_repos.user import BaseUserRepo
@@ -24,6 +28,8 @@ def _init_container() -> Container:
     container.register(BaseUserTokenRepo, UserTokenRepo)
 
     container.register(RegistrationCommandHandler)
+    container.register(LoginCommandHandler)
+    container.register(LogoutCommandHandler)
 
     container.register(Mediator, instance=_init_mediator(container), scope=Scope.singleton)
 
@@ -32,4 +38,7 @@ def _init_container() -> Container:
 def _init_mediator(container: Container) -> Mediator:
     mediator = Mediator()
     mediator.register_command(RegistrationCommand, container.resolve(RegistrationCommandHandler))
+    mediator.register_command(LoginCommand, container.resolve(LoginCommandHandler))
+    mediator.register_command(LogoutCommand, container.resolve(LogoutCommandHandler))
+
     return mediator
