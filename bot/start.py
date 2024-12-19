@@ -21,6 +21,7 @@ def init_mediator() -> Mediator:
     return mediator
 
 async def start_bot() -> None:
+
     logging.basicConfig(level=logging.INFO)
     load_dotenv()
     init_mediator()

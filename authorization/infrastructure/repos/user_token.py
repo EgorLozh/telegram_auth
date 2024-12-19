@@ -1,5 +1,6 @@
 from authorization.domain.entities.token import UserToken
 from authorization.domain.base_repos.user_token import BaseUserTokenRepo
+from authorization.domain.filters.base import BaseFilter
 from authorization.infrastructure.models.user_tokens import UserToken as UserTokenModel
 
 
@@ -29,8 +30,8 @@ class UserTokenRepo(BaseUserTokenRepo):
                          expired_at=model.expired_at, 
                          user=user)
     
-    def get_by_user_id(self, user_id: int) -> UserToken | None:
-        model = UserTokenModel.objects.filter(telegram_user__pk=user_id).first()
+    def select(self, filter: BaseFilter) -> UserToken | None:
+        model = UserTokenModel.objects.filter(**filter.get_filter_dict()).first()
         if model:
             return self.to_entity(model)
         return None

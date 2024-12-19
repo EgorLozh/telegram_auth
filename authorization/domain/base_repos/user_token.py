@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
+from authorization.domain.filters.base import BaseFilter
+
 
 class BaseUserTokenRepo(ABC):
 
@@ -17,7 +19,7 @@ class BaseUserTokenRepo(ABC):
         ...
 
     @abstractmethod
-    def get_by_user_id(self, user_id: int) -> Optional['UserToken']:
+    def select(self, filter: BaseFilter) -> Optional['UserToken']:
         ...
 
 from authorization.domain.entities.token import UserToken

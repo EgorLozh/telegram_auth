@@ -1,3 +1,4 @@
+from authorization.domain.filters.token import ByUserId
 from authorization.infrastructure.models.user import TelegramUser
 from authorization.infrastructure.models.user_tokens import UserToken as UserTokenModel
 from authorization.domain.entities.user import User
@@ -19,7 +20,7 @@ class UserRepo(BaseUserRepo):
     def to_entity(self, model: TelegramUser):
         from authorization.infrastructure.repos.user_token import UserTokenRepo
         token_repo = UserTokenRepo()
-        token = token_repo.get_by_user_id(model.pk)
+        token = token_repo.select(ByUserId(id=model.pk))
         return User(id=model.pk,
                     repo=self,
                     token=token,

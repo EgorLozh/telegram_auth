@@ -7,3 +7,4 @@ from events.base import BaseEvent
 class UserAuthEvent(BaseEvent):
     message: Message
     token: str
+    session_id: str
