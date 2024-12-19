@@ -3,7 +3,7 @@ from django.db import models
 
 
 class TelegramUser(AbstractUser):
-    telegram_id = models.BigIntegerField(unique=True)
+    telegram_id = models.BigIntegerField(null=True, blank=True)
 
     groups = models.ManyToManyField(
         Group,
