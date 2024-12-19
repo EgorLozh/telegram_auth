@@ -5,4 +5,5 @@ from authorization.infrastructure.models.user import TelegramUser
 
 class UserToken(models.Model):
     telegram_user = models.ForeignKey(TelegramUser, on_delete=models.CASCADE, null=True, blank=True)
+    expired_at = models.DateTimeField()
     token = models.CharField(max_length=255, unique=True)

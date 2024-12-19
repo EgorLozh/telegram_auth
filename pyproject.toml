@@ -10,6 +10,8 @@ python = "^3.11"
 django = "^5.1.4"
 python-dotenv = "^1.0.1"
 psycopg2-binary = "^2.9.10"
+pydantic-settings = "^2.7.0"
+punq = "^0.7.0"
 
 
 [build-system]

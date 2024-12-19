@@ -1,0 +1,12 @@
+<body>
+    {% if user.is_authenticated %}
+        </p.>{{ user.username }}!</p>
+    {% else %}
+        <p>Вы не авторизованы.</p>
+        </form>
+        <form method="POST" action="{% url 'registration' %}">
+            {% csrf_token %}
+            <button type="submit">Войти через Telegram</button>
+        </form>
+    {% endif %}
+</body>
