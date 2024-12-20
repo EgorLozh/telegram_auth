@@ -15,8 +15,8 @@ class BaseBrokerClient:
         self.connection = pika.BlockingConnection(pika.ConnectionParameters(
             host=self.host,
             port=self.port,
-            credentials=self.credentials,
-            heartbeat=600,
+            virtual_host='/',
+            credentials=self.credentials
         ))
 
     def connect(self):

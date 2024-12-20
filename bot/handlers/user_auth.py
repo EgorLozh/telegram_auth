@@ -1,19 +1,30 @@
+import os
+from dotenv import load_dotenv
+from broker.publisher import Publisher
 from aiogram.types import Message
 
 from handlers.base import BaseHandler
 from events.user_auth import UserAuthEvent
-from services import post_request
 
 
 class UserAuthHandler(BaseHandler):
     async def __call__(self, event: UserAuthEvent) -> None:
+        load_dotenv()
+        publisher = Publisher(
+            host=os.getenv('RABBIT_HOST'),
+            port=os.getenv('AMQP_PORT'),
+            user=os.getenv('BOT_BROKER_USER'),
+            password=os.getenv('BOT_BROKER_PASSWORD'),
+            queue=os.getenv('RABBIT_QUEUE')
+        )
         message: Message = event.message
         token = event.token
         data = {
+            'event_name': 'create_user',
             'telegram_id': message.from_user.id,
             'username': message.from_user.username,
             'first_name': message.from_user.first_name,
             'token': token
         }
-        response = await post_request(data=data)
-        await message.answer(str(response))
+
+        publisher.publish(data)

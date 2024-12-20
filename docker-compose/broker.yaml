@@ -8,6 +8,16 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=${RABBIT_USER}
       - RABBITMQ_DEFAULT_PASS=${RABBIT_PASSWORD}
+    
     ports:
       - ${RABBIT_PORT}:15672
       - ${AMQP_PORT}:5672
+    command: >
+      bash -c "
+      rabbitmq-server & 
+      sleep 10 && 
+      rabbitmqctl add_user ${BOT_BROKER_USER} ${BOT_BROKER_PASSWORD} &&
+      rabbitmqctl set_user_tags ${BOT_BROKER_USER} administrator &&
+      rabbitmqctl set_permissions -p / ${BOT_BROKER_USER} '.*' '.*' '.*' &&
+      wait
+      "
