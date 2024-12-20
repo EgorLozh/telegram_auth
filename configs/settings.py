@@ -18,6 +18,8 @@ class Settings(BaseSettings):
     #telegram bot
     BOT_TOKEN: str
     BOT_URL: str
+    BOT_BROKER_USER: str
+    BOT_BROKER_PASSWORD: str
 
     #RebbitMQ
     RABBIT_USER: str

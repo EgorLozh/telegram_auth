@@ -10,10 +10,10 @@ def run_consumer():
         settings = Settings()
         print(f"Settings: {settings}")
         consumer = Consumer(
-            user=settings.RABBIT_USER,
-            password=settings.RABBIT_PASSWORD,
+            user=settings.BOT_BROKER_USER,
+            password=settings.BOT_BROKER_PASSWORD,
             host=settings.RABBIT_HOST,
-            port=settings.RABBIT_PORT,
+            port=settings.AMQP_PORT,
             queue=settings.RABBIT_QUEUE
         )
         print(f"Consumer initialized with queue: {settings.RABBIT_QUEUE}")
