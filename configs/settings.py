@@ -19,5 +19,15 @@ class Settings(BaseSettings):
     BOT_TOKEN: str
     BOT_URL: str
 
+    #RebbitMQ
+    RABBIT_USER: str
+    RABBIT_PASSWORD: str
+    RABBIT_HOST: str
+    RABBIT_PORT: str
+    AMQP_PORT: str
+    RABBIT_QUEUE: str
+
+    #celery
+    CELERY_BROKER_URL: str
 
     model_config = SettingsConfigDict(env_file=".env", extra="allow")

@@ -2,16 +2,23 @@ import json
 import pika
 
 from authorization.infrastructure.broker.base import BaseBrokerClient
+from authorization.infrastructure.broker.mediator import Mediator
 
 
 
 class Consumer(BaseBrokerClient):
+    mediator: Mediator = Mediator()
 
     def call_back(self, ch, method, properties, body):
 
         json_str = body.decode('utf-8')
-        json_obj = json.loads(json_str)
-        # обрабатываем сообщение
+        event_dict: dict = json.loads(json_str)
+
+        event_class = self.mediator.get_event_type(event_dict['event_name'])
+
+        event = event_class(**event_dict)
+
+        self.mediator.handle_event(event)
 
     def consume(self):
         try:

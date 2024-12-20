@@ -101,6 +101,11 @@ DATABASES = {
 }
 
 
+# Celery
+
+CELERY_BROKER_URL = settings.CELERY_BROKER_URL
+
+
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
