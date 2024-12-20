@@ -15,5 +15,5 @@ class UserAuthHandler(BaseHandler):
             'first_name': message.from_user.first_name,
             'token': token
         }
-        response = await post_request(data=data, sessionid=event.session_id)
+        response = await post_request(data=data)
         await message.answer(str(response))

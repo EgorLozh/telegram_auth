@@ -4,6 +4,7 @@ LOGS = docker logs
 APP_COMPOSE_FILE = docker-compose/django_app.yaml
 STORAGE_COMPOSE_FILE = docker-compose/storage.yaml
 TG_BOT_COMPOSE_FILE = docker-compose/telegram_bot.yaml
+BROKER_COMPOSE_FILE = docker-compose/broker.yaml
 MANAGE_PY = python manage.py
 APP_CONTAINER = django-app
 ENV_FILE = .env
@@ -51,14 +52,23 @@ migrate:
 	$(EXEC) $(APP_CONTAINER) poetry run $(MANAGE_PY) migrate
 
 
+.PHONY: broker
+broker:
+	$(DC) --env-file $(ENV_FILE) -f $(BROKER_COMPOSE_FILE) up --build -d
+
+
+.PHONY: broker-down
+broker-down:
+	$(DC) -f $(BROKER_COMPOSE_FILE) down
+
 .PHONY: all
 all:
-	$(DC) --env-file $(ENV_FILE) -f $(APP_COMPOSE_FILE) -f $(STORAGE_COMPOSE_FILE) -f $(TG_BOT_COMPOSE_FILE) up --build -d
+	$(DC) --env-file $(ENV_FILE) -f $(APP_COMPOSE_FILE) -f $(STORAGE_COMPOSE_FILE) -f $(TG_BOT_COMPOSE_FILE) -f $(BROKER_COMPOSE_FILE) up --build -d
 
 
 .PHONY: down
 down: 
-	$(DC) --env-file $(ENV_FILE) -f $(APP_COMPOSE_FILE) -f $(STORAGE_COMPOSE_FILE) -f $(TG_BOT_COMPOSE_FILE) down
+	$(DC) --env-file $(ENV_FILE) -f $(APP_COMPOSE_FILE) -f $(STORAGE_COMPOSE_FILE) -f $(TG_BOT_COMPOSE_FILE) -f $(BROKER_COMPOSE_FILE) down
 
 .PHONY: restart
 restart: down all

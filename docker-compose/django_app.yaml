@@ -13,3 +13,18 @@ services:
       - ../.:/app/
     depends_on:
       - postgres
+
+  celery:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    container_name: celery
+    command: ["poetry", "run", "celery", "-A", "telegram_auth.telegram_auth.celery", "worker", "--loglevel=info"]
+    env_file:
+      - ../.env
+    volumes:
+      - ../.:/app/
+    depends_on:
+      - rabbitmq
+      - django-app
+      - postgres

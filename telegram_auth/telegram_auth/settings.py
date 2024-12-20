@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'authorization',
+    'django_celery_results',
 ]
 
 REST_FRAMEWORK = {
