@@ -13,7 +13,10 @@ class User(BaseEntity):
     telegram_id: int | None = None
 
     def save(self):
-        self.repo.save(self)
+        return self.repo.save(self)
+
+    def update(self):
+        return self.repo.update(self)
 
 from authorization.domain.base_repos.user import BaseUserRepo
 from authorization.domain.entities.token import UserToken

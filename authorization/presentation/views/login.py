@@ -4,16 +4,19 @@ from rest_framework.response import Response
 from authorization.application.commands.login import LoginCommand
 from authorization.application.container import get_container
 from authorization.application.mediator import Mediator
-from authorization.presentation.serializers.login import LoginSerializer
 
 class LoginView(APIView):
-    def post(self, request):
-        serializer = LoginSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+    def get(self, request):
 
-        command = LoginCommand(request=request, username=serializer.validated_data['username'], password=serializer.validated_data['password'])
+        telegram_token = request.COOKIES.get('telegram_token')
+        if not telegram_token:
+            return Response({'success': False})
+        command = LoginCommand(request=request, telegram_token=telegram_token)
         container = get_container()
         mediator: Mediator = container.resolve(Mediator)
-        session = mediator.handle_command(command)
+        try:
+            mediator.handle_command(command)
+        except Exception as e:
+            return Response({'success': False})
 
-        return Response({'session': session})
+        return Response({'success': True})

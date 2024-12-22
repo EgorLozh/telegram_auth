@@ -10,7 +10,7 @@ class RegistrationView(View):
     def post(self, request):
         container = get_container()
         mediator: Mediator = container.resolve(Mediator)
-        return mediator.handle_command(RegistrationCommand())
+        return mediator.handle_command(RegistrationCommand(request=request))
     
     def get(self, request):
         return render(request, 'base.html', {'user': request.user})

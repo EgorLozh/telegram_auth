@@ -1,12 +1,33 @@
 <body>
     {% if user.is_authenticated %}
-        </p.>{{ user.username }}!</p>
+        <p>Привет, {{ user.username }}!</p>
     {% else %}
         <p>Вы не авторизованы.</p>
-        </form>
         <form method="POST" action="{% url 'registration' %}">
             {% csrf_token %}
             <button type="submit">Войти через Telegram</button>
         </form>
     {% endif %}
+
+    <script>
+        function checkLoginStatus() {
+            const intervalId = setInterval(function() {
+                fetch("{% url 'login' %}")
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            document.querySelector('body').innerHTML = `<p>Привет, ${user.username}!</p>`;
+                            
+                            clearInterval(intervalId);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Ошибка:', error);
+                        clearInterval(intervalId);
+                    });
+            }, 2000);
+        }
+
+        window.onload = checkLoginStatus;
+    </script>
 </body>

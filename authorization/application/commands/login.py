@@ -8,5 +8,4 @@ from authorization.application.commands.base import BaseCommand
 @dataclass
 class LoginCommand(BaseCommand):
     request: Request
-    username: str
-    password: str
+    telegram_token: str

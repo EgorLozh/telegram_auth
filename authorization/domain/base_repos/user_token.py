@@ -22,4 +22,12 @@ class BaseUserTokenRepo(ABC):
     def select(self, filter: BaseFilter) -> Optional['UserToken']:
         ...
 
+    @abstractmethod
+    def update(self, token: 'UserToken') -> 'UserToken':
+        ...
+    
+    @abstractmethod
+    def delete(self, token: 'UserToken') -> 'UserToken':
+        ...
+
 from authorization.domain.entities.token import UserToken

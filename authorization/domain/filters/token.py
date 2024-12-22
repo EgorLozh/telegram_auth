@@ -15,4 +15,4 @@ class ByTokenOid(BaseFilter):
     oid: str
 
     def get_filter_dict(self):
-        return {'oid': self.oid}
+        return {'token': self.oid}

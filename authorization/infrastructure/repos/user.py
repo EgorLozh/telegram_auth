@@ -10,17 +10,35 @@ class UserRepo(BaseUserRepo):
     def save(self, user: User) -> None:
         model = self.to_model(user)
         model.save()
+        return self.to_entity(model)
+
+    def update(self, user):
+        model = TelegramUser.objects.get(id=user.id)
+        model.telegram_id = user.telegram_id
+        model.first_name = user.first_name
+        model.username = user.username
+        model.save()
+        return self.to_entity(model)
     
+    def select(self, filter: ByUserId) -> UserTokenEntity | None:
+        model = TelegramUser.objects.filter(**filter.get_filter_dict()).first()
+        if model:
+            return self.to_entity(model)
+        return None
+
     def to_model(self, user: User):
-        return TelegramUser(pk=user.id,
+        return TelegramUser(id=user.id,
                             telegram_id=user.telegram_id,
                             first_name=user.first_name,
                             username=user.username)
     
-    def to_entity(self, model: TelegramUser):
+    def to_entity(self, model: TelegramUser, transfer_token=None):
         from authorization.infrastructure.repos.user_token import UserTokenRepo
         token_repo = UserTokenRepo()
-        token = token_repo.select(ByUserId(id=model.pk))
+        if not transfer_token:
+            token = token_repo.select(ByUserId(id=model.pk))
+        else:
+            token = transfer_token
         return User(id=model.pk,
                     repo=self,
                     token=token,

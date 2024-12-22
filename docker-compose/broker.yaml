@@ -6,8 +6,8 @@ services:
     env_file:
       - ../.env
     environment:
-      - RABBITMQ_DEFAULT_USER=${RABBIT_USER}
-      - RABBITMQ_DEFAULT_PASS=${RABBIT_PASSWORD}
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
     
     ports:
       - ${RABBIT_PORT}:15672
@@ -16,8 +16,10 @@ services:
       bash -c "
       rabbitmq-server & 
       sleep 10 && 
-      rabbitmqctl add_user ${BOT_BROKER_USER} ${BOT_BROKER_PASSWORD} &&
-      rabbitmqctl set_user_tags ${BOT_BROKER_USER} administrator &&
-      rabbitmqctl set_permissions -p / ${BOT_BROKER_USER} '.*' '.*' '.*' &&
+      rabbitmqctl list_users | grep -q ${RABBIT_USER} || (
+        rabbitmqctl add_user ${RABBIT_USER} ${RABBIT_PASSWORD} &&
+        rabbitmqctl set_user_tags ${RABBIT_USER} administrator &&
+        rabbitmqctl set_permissions -p / ${RABBIT_USER} '.*' '.*' '.*'
+      ) &&
       wait
       "

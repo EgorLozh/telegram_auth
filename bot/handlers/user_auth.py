@@ -13,8 +13,8 @@ class UserAuthHandler(BaseHandler):
         publisher = Publisher(
             host=os.getenv('RABBIT_HOST'),
             port=os.getenv('AMQP_PORT'),
-            user=os.getenv('BOT_BROKER_USER'),
-            password=os.getenv('BOT_BROKER_PASSWORD'),
+            user=os.getenv('RABBIT_USER'),
+            password=os.getenv('RABBIT_PASSWORD'),
             queue=os.getenv('RABBIT_QUEUE')
         )
         message: Message = event.message
@@ -28,3 +28,5 @@ class UserAuthHandler(BaseHandler):
         }
 
         publisher.publish(data)
+
+        await message.answer('Вы успешно авторизовались!')
